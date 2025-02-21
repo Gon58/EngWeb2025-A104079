@@ -10,7 +10,7 @@
 
 Este projeto, realizado no âmbito da UC de Engenharia Web, consiste num serviço em nodejs que cria páginas web que consomem a API de dados servida pelo json-server da oficina de reparações. Este serviço permite que consultemos reparações, através do nome dos clientes, as intervenções realizadas na oficina e as viaturas.
 
-Para acessar a cada página, basta abrir os seguintes links no navegados:
+Para aceder a cada página, basta abrir os seguintes links no navegador:
 
 - **Reparações:** http://localhost:1234/reparacoes
 - **Viaturas:** http://localhost:1234/viaturas
@@ -23,6 +23,6 @@ Para acessar a cada página, basta abrir os seguintes links no navegados:
 # Utilização:
  - Executar os comandos:
    ```sh
-   json-server -w dataset_reparacoes.json
+   json-server --w dataset_reparacoes.json
    node server.js
    ```

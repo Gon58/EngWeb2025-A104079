@@ -13,3 +13,4 @@ Este repositório destina-se à UC Engenharia Web no ano letivo de 2025. Aqui se
 ### Lista de Referências para os ficheiros dos TPCs
 
 - [TPC1](./TPC1)
+- [TPC2](./TPC2)
