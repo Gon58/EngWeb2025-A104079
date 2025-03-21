@@ -12,7 +12,7 @@ Este projeto, realizado no âmbito da UC de Engenharia Web, consiste num serviç
 
 ## Lista de Resultados:
 
-- [appAlunos](alunos_server_skeleton.js)
+- [appAlunos](appAlunos)
 
 # Utilização:
  - Abrir a diretoria appAlunos no terminal e executar o comando:
