@@ -1,0 +1,31 @@
+extends layout
+
+block content
+    .w3-card-4
+      header.w3-container.w3-teal
+        h1
+          span Books List 
+          a.w3-btn.w3-round.w3-grey(href="/registo") +
+
+      .w3-container
+        table.w3-table-all
+          tr
+            th Id
+            th Title
+            th Author
+            th Publish Date
+            th Pages
+            
+          each book in blist 
+            tr
+              td
+                a(href="/"+book.bookId)= book.bookId
+              td= book.title
+              td
+                a(href="entidades/"+book.author)= book.author
+              td= book.publishDate
+              td= book.pages
+              td
+                a(href="/edit/"+book.bookId) Edit
+              td
+                a(href="/delete/"+book.bookId) Delete

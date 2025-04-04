@@ -1,0 +1,132 @@
+extends layout
+
+block content
+    .w3-card-4
+      header.w3-container.w3-teal
+        h1
+          span Book Details
+
+      .w3-row-padding.w3-margin-top
+        .w3-col.l4
+          .w3-card-4
+            if book.coverImg
+              .w3-display-container
+                img.w3-image(src=book.coverImg alt="Book Cover" style="width:100%")
+            else
+              .w3-display-container
+            .w3-container.w3-center
+              h3= book.title
+              p.w3-text-teal
+                b= book.author
+              if book.series
+                p.w3-text-grey= book.series
+
+        .w3-col.l8
+          .w3-card-4
+            header.w3-container.w3-light-grey
+              h3 Book Information
+            .w3-container
+              .w3-row.w3-margin-top
+                .w3-col.m6
+                  p
+                    b Book ID: 
+                    span #{book.bookId || "❌"}
+                  p
+                    b Book Title: 
+                    span #{book.title || "❌"}
+                  p
+                    b Author: 
+                    span #{book.author || "❌"}
+                  p                   
+                    b Series: 
+                    span #{book.series || "❌"}
+                  p
+                    b ISBN: 
+                    span #{book.isbn || "❌"}
+                  p
+                    b Language: 
+                    span #{book.language || "❌"}
+                  p
+                    b Format: 
+                    span #{book.bookFormat || "❌"}
+                  p
+                    b Edition: 
+                    span #{book.edition || "❌"}
+                  p
+                    b Pages: 
+                    span #{book.pages || "❌"}
+                .w3-col.m6
+                  p
+                    b Publisher: 
+                    span #{book.publisher || "❌"}
+                  p
+                    b Publish Date: 
+                    span #{book.publishDate || "❌"}
+                  p
+                    b Rating: 
+                    span #{book.rating ? book.rating + "/5" : "❌"}
+                  p
+                    b Liked: 
+                    span #{book.likedPercent ? book.likedPercent + "%" : "❌"}
+                  p
+                    b Number of Ratings: 
+                    span #{book.numRatings || "❌"}
+                  p
+                    b BBE Score: 
+                    span #{book.bbeScore || "❌"}
+                  p
+                    b BBE Votes: 
+                    span #{book.bbeVotes || "❌"}
+                  p
+                    b Price: 
+                    span #{book.price ? "$" + book.price : "❌"}
+
+          .w3-card-4.w3-margin-top
+            header.w3-container.w3-light-grey
+              h3 Description
+            .w3-container
+              p #{book.description || "❌"}
+
+          .w3-card-4.w3-margin-top
+            header.w3-container.w3-light-grey
+              h3 Additional Details
+            .w3-container
+              if book.genres && book.genres[0].length > 2
+                p
+                  b Genres: 
+                  each genre in book.genres
+                    span=genre
+              else
+                p
+                  b Genres: 
+                  span ❌
+              
+              if book.characters && book.characters[0].length > 2
+                p
+                  b Characters: 
+                  each char in book.characters
+                    span=char
+              else
+                p
+                  b Characters: 
+                  span ❌
+
+              if book.awards && book.awards[0].length > 2
+                p
+                  b Awards: 
+                  each award in book.awards
+                      span=award
+              else
+                p
+                  b Awards: 
+                  span ❌
+
+              if book.setting && book.setting[0].length > 2
+                p
+                  b Setting: 
+                  each loc in book.setting
+                    span= loc
+              else
+                p
+                  b Setting: 
+                  span ❌

@@ -1,0 +1,81 @@
+extends layout
+
+block content
+    .w3-card-4
+      header.w3-container.w3-teal
+          h1 Edit Book: #{book.title}
+
+      form.w3-container(method="POST" style="margin: 10px auto")
+        fieldset
+          legend Basic Information
+          label Book ID
+          input.w3-input.w3-round(type="text" name="bookId" readonly value=book.bookId)
+          label Title
+          input.w3-input.w3-round(type="text" name="title" value=book.title)
+          label Series
+          input.w3-input.w3-round(type="text" name="series" value=book.series)
+          label Author
+          input.w3-input.w3-round(type="text" name="author" value=book.author)
+          label Rating
+          input.w3-input.w3-round(type="text" name="rating" value=book.rating)
+          
+        fieldset
+          legend Details
+          label Description
+          textarea.w3-input.w3-round(name="description" rows="4")= book.description
+          label Language
+          input.w3-input.w3-round(type="text" name="language" value=book.language)
+          label ISBN
+          input.w3-input.w3-round(type="text" name="isbn" value=book.isbn)
+          label Book Format
+          input.w3-input.w3-round(type="text" name="bookFormat" value=book.bookFormat)
+          label Edition
+          input.w3-input.w3-round(type="text" name="edition" value=book.edition)
+          
+        fieldset
+          legend Publishing Information
+          label Pages
+          input.w3-input.w3-round(type="text" name="pages" value=book.pages)
+          label Publisher
+          input.w3-input.w3-round(type="text" name="publisher" value=book.publisher)
+          label Publish Date
+          input.w3-input.w3-round(type="text" name="publishDate" value=book.publishDate)
+          label First Publish Date
+          input.w3-input.w3-round(type="text" name="firstPublishDate" value=book.firstPublishDate)
+
+        fieldset
+          legend Arrays
+          label Genres (comma-separated)
+          input.w3-input.w3-round(type="text" name="genres" value=book.genres)
+          label Characters (comma-separated)
+          input.w3-input.w3-round(type="text" name="characters" value=book.characters)
+          label Awards (comma-separated)
+          input.w3-input.w3-round(type="text" name="awards" value=book.awards)
+          label Ratings by Stars (comma-separated)
+          input.w3-input.w3-round(type="text" name="ratingsByStars" value=book.ratingsByStars)
+          label Setting (comma-separated)
+          input.w3-input.w3-round(type="text" name="setting" value=book.setting)
+
+        fieldset
+          legend Statistics
+          label Number of Ratings
+          input.w3-input.w3-round(type="text" name="numRatings" value=book.numRatings)
+          label Liked Percent
+          input.w3-input.w3-round(type="text" name="likedPercent" value=book.likedPercent)
+          label BBE Score
+          input.w3-input.w3-round(type="text" name="bbeScore" value=book.bbeScore)
+          label BBE Votes
+          input.w3-input.w3-round(type="text" name="bbeVotes" value=book.bbeVotes)
+          label Price
+          input.w3-input.w3-round(type="text" name="price" value=book.price)
+
+        fieldset
+          legend Cover Image
+          label Cover Image URL
+          input.w3-input.w3-round(type="text" name="coverImg" value=book.coverImg)
+          if book.coverImg
+            img.w3-image(src=book.coverImg alt="Current Cover" style="max-width: 200px")
+
+        .w3-container.w3-margin-top
+          button.w3-btn.w3-teal.w3-round(type="submit") Update Book
+          a.w3-btn.w3-grey.w3-round.w3-margin-left(href="/books") Cancel

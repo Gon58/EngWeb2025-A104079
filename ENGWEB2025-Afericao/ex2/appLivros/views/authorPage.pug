@@ -1,0 +1,25 @@
+extends layout
+
+block content
+  .w3-card-4
+    header.w3-container.w3-teal
+      h1 #{author.name}
+
+    .w3-container
+      h2 #{author.name}
+      h4.w3-text-teal Author ID: #{author.id}
+      h4.w3-text-grey Total Books: #{author.totalBooks}
+
+      .w3-container
+        table.w3-table-all
+          tr.w3-teal
+            th Title
+            th Publish Date
+            th Pages
+
+          each book in author.books 
+            tr
+              td
+                a(href="/"+book.bookId)= book.title
+              td= book.publishDate
+              td= book.pages

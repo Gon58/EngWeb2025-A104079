@@ -1,0 +1,79 @@
+extends layout
+
+block content
+    .w3-card-4
+      header.w3-container.w3-teal
+          h1 Add Book
+
+      form.w3-container(method="POST" style="margin: 10px auto")
+        fieldset
+          legend Basic Information
+          label Book ID
+          input.w3-input.w3-round(type="text" name="bookId" required)
+          label Title
+          input.w3-input.w3-round(type="text" name="title" required)
+          label Series
+          input.w3-input.w3-round(type="text" name="series")
+          label Author
+          input.w3-input.w3-round(type="text" name="author" required)
+          label Rating
+          input.w3-input.w3-round(type="text" name="rating")
+
+        fieldset
+          legend Details
+          label Description
+          textarea.w3-input.w3-round(type="text" name="description")
+          label Language
+          input.w3-input.w3-round(type="text" name="language")
+          label ISBN
+          input.w3-input.w3-round(type="text" name="isbn")
+          label Book Format
+          input.w3-input.w3-round(type="text" name="bookFormat")
+          label Edition
+          input.w3-input.w3-round(type="text" name="edition")
+
+        fieldset
+          legend Publishing Information
+          label Pages
+          input.w3-input.w3-round(type="text" name="pages")
+          label Publisher
+          input.w3-input.w3-round(type="text" name="publisher")
+          label Publish Date
+          input.w3-input.w3-round(type="text" name="publishDate")
+          label First Publish Date
+          input.w3-input.w3-round(type="text" name="firstPublishDate")
+
+        fieldset
+          legend Arrays
+          label Genres (comma-separated)
+          input.w3-input.w3-round(type="text" name="genres")
+          label Characters (comma-separated)
+          input.w3-input.w3-round(type="text" name="characters")
+          label Awards (comma-separated)
+          input.w3-input.w3-round(type="text" name="awards")
+          label Ratings by Stars (comma-separated)
+          input.w3-input.w3-round(type="text" name="ratingsByStars")
+          label Setting (comma-separated)
+          input.w3-input.w3-round(type="text" name="setting")
+
+        fieldset
+          legend Statistics
+          label Number of Ratings
+          input.w3-input.w3-round(type="text" name="numRatings")
+          label Liked Percent
+          input.w3-input.w3-round(type="text" name="likedPercent")
+          label BBE Score
+          input.w3-input.w3-round(type="text" name="bbeScore")
+          label BBE Votes
+          input.w3-input.w3-round(type="text" name="bbeVotes")
+          label Price
+          input.w3-input.w3-round(type="text" name="price")
+
+        fieldset
+          legend Cover Image
+          label Cover Image URL
+          input.w3-input.w3-round(type="text" name="coverImg")
+
+        .w3-container.w3-margin-top
+          button.w3-btn.w3-teal.w3-round(type="submit") Add Book
+          a.w3-btn.w3-grey.w3-round.w3-margin-left(href="/books") Cancel
