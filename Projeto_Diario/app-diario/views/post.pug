@@ -1,0 +1,249 @@
+extends layout
+
+block content
+    .w3-container(style="max-width:900px; margin:0 auto; padding-top:24px;")
+        if error 
+            .w3-panel.w3-red.w3-display-container.w3-round-large.w3-margin-bottom.w3-animate-opacity
+                span.w3-button.w3-display-topright(onclick="this.parentElement.style.display='none'") &times;
+                h3 Error!
+                p= error
+
+        .w3-card-4.w3-round-large(style="box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom:24px; overflow:hidden;")
+            .w3-container.w3-padding-16(style="background: linear-gradient(to bottom, #00796b 0%, #70b7a1 100%); color:white; position:relative;")
+                if isAdmin
+                    a(href="/admin" title="Voltar" style="position:absolute; top:16px; right:16px; color:white; font-size:20px;")
+                        i.fa.fa-times
+                else
+                    a(href="/diario" title="Voltar" style="position:absolute; top:16px; right:16px; color:white; font-size:20px;")
+                        i.fa.fa-times
+
+                if isAdmin
+                    h2(style="font-weight:600; margin:0 0 8px 0;") Edit Post
+                else
+                    h1(style="font-weight:600; margin:0 0 8px 0;")= post.title || 'Untitled Post'
+
+                div(style="display:flex; align-items:center; gap:8px; margin-top:8px;")
+                    i.fa.fa-calendar
+                    span(style="line-height:1;")= new Date(post.createdAt).toLocaleString('pt-PT').substring(0, 17)
+
+
+            .w3-container.w3-padding-16
+                if isAdmin
+                    .w3-margin-bottom
+                        label.w3-text-gray(style="font-weight:500;") Title
+                        input#title.w3-input.w3-border.w3-round-large(
+                            type="text" 
+                            value=post.title 
+                            name="title" 
+                            style="padding:12px 16px; border-color:#e5e7eb;"
+                        )
+
+                    .w3-margin-bottom
+                        label.w3-text-gray(style="font-weight:500;") Content
+                        textarea#content.w3-input.w3-border.w3-round-large(
+                            name="content" 
+                            rows="6" 
+                            style="padding:12px 16px; border-color:#e5e7eb; resize:vertical; min-height:150px;"
+                        )= post.content
+
+                    .w3-margin-bottom.w3-padding-small
+                        label.w3-checkbox.w3-margin-right
+                            input#isPublic.w3-check(type="checkbox" name="isPublic" checked=post.isPublic)
+                            span.w3-checkmark(style="background-color:#e5e7eb; border-color:#d1d5db")
+                            span.w3-margin-left(style="font-weight:500;") Make this post public
+
+                    .w3-margin-bottom
+                        label.w3-text-gray(style="font-weight:500; display:block; margin-bottom:8px;") Add new file:
+                        input#file.w3-input.w3-border.w3-round-large(
+                            type="file" 
+                            name="file" 
+                            style="border-color:#e5e7eb; padding:12px 16px;"
+                        )
+
+                        if post.files && post.files.length > 0
+                            .w3-margin-top
+                                label.w3-text-gray(style="font-weight:500; display:block; margin-bottom:12px;") Existing files:
+
+                                //- Documents Section
+                                .w3-container.w3-padding-16.w3-round-large(style="background:#f8fafc; margin-bottom:16px; border:1px solid #e5e7eb;")
+                                    h4(style="color:#1e293b; margin-top:0; font-weight:600;") 
+                                        i.fas.fa-file-alt.w3-text-teal.w3-margin-right
+                                        | Documents
+                                    .w3-row-padding
+                                        each file in post.files
+                                            if file.type && !file.type.startsWith('image/')
+                                                .w3-col.l6.m6.s12.w3-margin-bottom
+                                                    .w3-container.w3-round-large.w3-white.w3-padding-16.file-container(
+                                                        style="border:1px solid #e5e7eb; position:relative;"
+                                                        data=file.path
+                                                    )
+                                                        .w3-display-container
+                                                            button.w3-button.w3-display-right.mark-delete-btn(
+                                                                data=file.path 
+                                                                type="button"
+                                                                style="padding-bottom: 8px;"
+                                                            )
+                                                                i.fa.fa-trash.w3-text-red
+                                                            i.fa.fa-file-pdf.w3-text-red(style="margin-right:12px;")
+                                                            a(href=file.url target="_blank" style="word-break:break-all;")= file.filename
+
+                                //- Images Section
+                                .w3-container.w3-padding-16.w3-round-large(style="background:#f8fafc; margin-bottom:16px; border:1px solid #e5e7eb;")
+                                    h4(style="color:#1e293b; margin-top:0; font-weight:600;")
+                                        i.fas.fa-images.w3-text-teal.w3-margin-right
+                                        | Images
+                                    .w3-row-padding
+                                        each file in post.files
+                                            if file.type && file.type.startsWith('image/')
+                                                .w3-col.l6.m6.s12.w3-margin-bottom
+                                                    .w3-container.w3-padding-16.w3-round-large.w3-white.file-container(
+                                                        style="border:1px solid #e5e7eb;"
+                                                        data=file.path
+                                                    )
+                                                        .w3-display-container
+                                                            button.w3-button.w3-display-topright.mark-delete-btn(
+                                                                data=file.path 
+                                                                type="button"
+                                                            )
+                                                                i.fa.fa-trash.w3-text-red
+                                                        .w3-center
+                                                            a(href=file.url target="_blank")
+                                                                img.w3-image(
+                                                                    src=file.url 
+                                                                    alt=file.filename 
+                                                                    style="width:100%; height:180px; object-fit:cover; border-radius:8px;"
+                                                                )
+                        .w3-center.w3-padding-16
+                            a.w3-button.w3-round-large.w3-teal.w3-padding-large(
+                                href=`/posts/download/${post._id}`
+                                style="min-width:200px;"
+                            )
+                                i.fa.fa-download.w3-margin-right
+                                | Download All Files
+                else
+                    .w3-margin-bottom
+                        p(style="color:rgb(44, 48, 54); line-height:1.6; white-space:pre-wrap; margin-bottom:16px;")= post.content || 'No content available'
+
+                        if post.isPublic
+                            span.w3-tag.w3-round-large(style="background:#10b981; padding:4px 12px;")
+                                i.fas.fa-globe.w3-margin-right
+                                | Public
+                        else
+                            span.w3-tag.w3-round-large(style="background:#6b7280; padding:4px 12px;")
+                                i.fas.fa-lock.w3-margin-right
+                                | Private
+                if !isAdmin && post.files && post.files.length > 0
+                    .w3-margin-top
+                        if post.files.some(file => !file.type || !file.type.startsWith('image/'))
+                            .w3-container.w3-padding-16.w3-round-large(style="background:#f8fafc; margin-bottom:16px; border:1px solid #e5e7eb;")
+                                h4(style="color:#1e293b; margin-top:0; font-weight:600;")
+                                    i.fas.fa-file-alt.w3-margin-right.w3-text-teal
+                                    | Documents
+                                each file in post.files
+                                    if !file.type || !file.type.startsWith('image/')
+                                        .w3-panel.w3-white.w3-round-large.w3-padding-16(
+                                            style="margin:8px 0; border:1px solid #e5e7eb; display:flex; align-items:center;"
+                                        )
+                                            i.fa.fa-file-pdf.w3-text-red.w3-margin-right(style="font-size:24px;")
+                                            a(href=file.url target="_blank" style="flex-grow:1; word-break:break-all;")= file.filename
+
+                        if post.files.some(file => file.type && file.type.startsWith('image/'))
+                            .w3-container.w3-padding-16.w3-round-large(style="background:#f8fafc; margin-bottom:16px; border:1px solid #e5e7eb;")
+                                h4(style="color:#1e293b; margin-top:0; font-weight:600;")
+                                    i.fas.fa-images.w3-margin-right.w3-text-teal
+                                    | Images
+                                .w3-row-padding
+                                    each file in post.files
+                                        if file.type && file.type.startsWith('image/')
+                                            .w3-col.l6.m6.s12.w3-margin-bottom
+                                                .w3-container.w3-padding-16.w3-round-large.w3-white(
+                                                    style="border:1px solid #e5e7eb;"
+                                                )
+                                                    .w3-center
+                                                        a(href=file.url target="_blank")
+                                                            img.w3-image(
+                                                                src=file.url 
+                                                                alt=file.filename 
+                                                                style="width:100%; height:180px; object-fit:cover; border-radius:8px;"
+                                                            )
+                                                    .w3-margin-top
+                                                        a(href=file.url target="_blank" style="word-break:break-all;")= file.filename
+
+                        .w3-center.w3-padding-16
+                            a.w3-button.w3-round-large.w3-teal.w3-padding-large(
+                                href=`/posts/download/${post._id}`
+                                style="min-width:200px;"
+                            )
+                                i.fa.fa-download.w3-margin-right
+                                | Download All Files
+
+                .w3-container.w3-padding-24(style="border-top:1px solid #e5e7eb;")
+                    h3(style="color:#1e293b; font-weight:600; margin-bottom:24px;")
+                        i.fas.fa-comments.w3-margin-right.w3-text-teal
+                        | Comments
+                    .w3-container.w3-margin-bottom(style="display:flex; gap:12px;")
+                        input#w3-input-comment.w3-input.w3-border.w3-round-large(
+                            type="text"
+                            placeholder=authenticated ? "Add a comment..." : "Please login to comment"
+                            autocomplete="off"
+                            style="flex-grow:1; padding:12px 16px; border-color:#e5e7eb;"
+                            disabled=!authenticated
+                        )
+                        button.w3-button.w3-round-large.w3-teal(
+                            onclick=authenticated ? `submitComment('${post._id}', '${userEmail ? userEmail : 'Admin'}')` : "return false;"
+                            style=`padding:12px 24px; display:flex; align-items:center; justify-content:center; gap:8px; ${!authenticated ? 'background:#e5e7eb !important; color:#9ca3af !important; cursor:not-allowed;' : ''}`
+                            disabled=!authenticated
+                        )
+                            i.fas.fa-paper-plane
+                            span Comentar
+
+                if post.comments && post.comments.length > 0
+                    .w3-container
+                        each comment in post.comments.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                            .w3-container.w3-white.w3-margin-bottom.w3-round-large(
+                                style="padding:16px; border:1px solid #e5e7eb; position:relative;"
+                            )
+                                .w3-row
+                                    .w3-col.s2.m1(style="padding-right:0;")
+                                        .w3-circle(
+                                            style="width:48px; height:48px; background-color:#f3f4f6; display:flex; align-items:center; justify-content:center;"
+                                        )
+                                            i.fa.fa-user(style="font-size:24px; color:#9ca3af;")
+
+                                    .w3-col.s10.m11
+                                        .w3-container
+                                            p(style="margin:0; font-weight:600; color:#111827;")
+                                                | #{comment.user}
+                                                span.w3-tag.w3-round.w3-light-grey.w3-small.w3-margin-left(
+                                                    style="font-weight:normal;"
+                                                )= new Date(comment.createdAt).toLocaleString('pt-PT').substring(0, 17)
+
+                                            p.w3-margin-top(
+                                                style="color:#374151; line-height:1.6; white-space:pre-line;"
+                                            )= comment.text
+                else
+                    .w3-container.w3-padding-24.w3-center
+                        p(style="color:#9ca3af;") No comments yet. Be the first to comment!
+
+            if isAdmin
+                .w3-container.w3-padding-16.w3-center(style="border-top:1px solid #e5e7eb;")
+                    button.w3-button.w3-round-large.w3-teal.w3-margin-right(
+                        onclick=`submitEdit(${JSON.stringify(post)})`
+                        style="padding:12px 24px; min-width:180px;"
+                    )
+                        i.fa.fa-save.w3-margin-right
+                        | Save Changes
+
+                    button.w3-button.w3-round-large.w3-red(
+                        onclick=`deletePost('${post._id}')`
+                        style="padding:12px 24px; min-width:180px;"
+                    )
+                        i.fa.fa-trash.w3-margin-right
+                        | Delete Post
+
+block scripts
+    script(src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js")
+    script(src="/javascripts/comments.js")
+    if isAdmin
+        script(src="/javascripts/posts.js")
+        script(src="/javascripts/files.js")

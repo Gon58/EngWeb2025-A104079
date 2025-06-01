@@ -1,0 +1,51 @@
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo2025:/data/db
+    networks:
+      - mynetwork
+    restart: unless-stopped
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+    volumes:
+      - ./api:/api
+      - api_node_modules:/api/node_modules
+    networks:
+      - mynetwork
+
+  app-diario:
+    build:
+      context: ./app-diario
+      dockerfile: Dockerfile
+    container_name: app-diario
+    ports:
+      - "8080:8080"
+    depends_on:
+      - api
+    volumes:
+      - ./app-diario:/app/diario
+      - app_diario_node_modules:/app/diario/node_modules
+    networks:
+      - mynetwork
+
+volumes:
+  mongo2025:
+    name: mongo2025
+  api_node_modules:
+  app_diario_node_modules:
+
+networks:
+  mynetwork:
+    driver: bridge

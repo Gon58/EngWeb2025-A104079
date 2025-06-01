@@ -1,0 +1,109 @@
+extends ../layout
+
+block content
+    .w3-container.w3-padding-32
+        .w3-row.w3-margin-bottom
+            .w3-col.w3-container
+                .w3-card.w3-white.w3-round-large.w3-padding(style="box-shadow: 0 1px 3px rgba(0,0,0,0.3)")
+                    .w3-row
+                        .w3-col.s8
+                            h3.text-black(style="margin-bottom:4px")= "Diário de Francisco Castro"
+                            p.w3-text-grey(style="margin-top:0; margin-left: 10px")= "ciscozin"
+                            p.w3-opacity
+                                i.fa.fa-calendar.w3-margin-right(style="margin-left: 10px") 
+                                = "13/03/2004"
+                        .w3-col.s4.w3-right-align
+                            if authenticated
+                                button.w3-button.w3-round-large.w3-red.w3-text-white.w3-border.w3-border-red.w3-hover-red(
+                                    onclick="window.location.href= '/logout'"
+                                    style="transition:all 0.3s"
+                                    onmouseover="this.style.transform='scale(1.1)'"
+                                    onmouseout="this.style.transform='scale(1.0)'")
+                                    i.fa.fa-sign-out.w3-margin-right
+                                    | Logout
+                            else 
+                                button.w3-button.w3-round-large.w3-teal.w3-hover-dark-teal(
+                                    onclick="window.location.href='/login'"
+                                    style="transition:all 0.3s"
+                                ) Sign In
+                    
+                    .w3-row.w3-margin-top
+                        .w3-col.s3.w3-center
+                            .w3-panel.w3-round-large(style="background:#f0fdfa")
+                                p
+                                    b.w3-text-teal Posts
+                                    br
+                                    span.w3-text-grey= posts.length
+                        .w3-col.s3.w3-center
+                            .w3-panel.w3-round-large(style="background:#f0fdfa")
+                                p
+                                    b.w3-text-teal Followers
+                                    br
+                                    span.w3-text-grey 505
+                .w3-container.w3-margin-bottom.w3-card.w3-round-large.w3-white.w3-padding.w3-margin-top
+                    .w3-bar-item.w3-left
+                        .w3-input.w3-border.w3-round-large.w3-margin-right(style="padding: 8px; width: 300px; display: inline-block")
+                            i.fa.fa-search.w3-margin-right
+                            input#searchInput.w3-input.w3-border-0(type="text" placeholder="Search posts..." style="display: inline; width: 85%; padding: 0px;")
+                        select#tagFilter.w3-select.w3-border.w3-round-large(style="width: 200px; display: inline-block")
+                            option(value="") Choose a tag...
+                            each tag in tags || []
+                                - const formattedTag = tag.charAt(0).toUpperCase() + tag.slice(1)
+                                option(value=tag)= formattedTag
+
+        .w3-row-padding
+            each post in posts || []
+                .w3-col.l4.m6.s12.w3-margin-bottom
+                    .w3-card.w3-round-large.w3-white.w3-hover-shadow(
+                        style="transition: all 0.3s;" 
+                        onmouseover="this.style.boxShadow='0 8px 16px 0 rgba(0,0,0,0.2)'; this.style.transform='scale(1.02)'" 
+                        onmouseout="this.style.boxShadow='0 4px 8px 0 rgba(0,0,0,0.1)'; this.style.transform='scale(1)'" 
+                        onclick=`window.location.href='/posts/${post._id}'`
+                    )
+                        - const imageFiles = post.files ? post.files.filter(file => file.type && file.type.startsWith('image/')) : []
+                        - const docFiles = post.files ? post.files.filter(file => !file.type.startsWith('image/')) : []
+                        - const remainingFiles = (post.files.length > 0 ? post.files.length : 0) - (imageFiles.length > 0 ? 1 : 0) - (docFiles.length > 0 ? 1 : 0)
+
+                        if imageFiles.length > 0
+                            .w3-display-container(style="height: 180px; overflow: hidden")
+                                img.w3-image(src=imageFiles[0].url alt=imageFiles[0].filename style="width:100%; height:100%; object-fit: cover")
+                                if post.isPublic
+                                    .w3-tag.w3-teal.w3-round.w3-display-topright.w3-margin Public
+                                else
+                                    .w3-tag.w3-red.w3-round.w3-display-topright.w3-margin Private
+                        
+                        if docFiles.length > 0
+                            .w3-container.w3-padding-16.w3-light-grey(style="position: relative; border-top: 1px solid #ddd")
+                                i.fa.fa-file-pdf.w3-text-red.w3-xxlarge
+                                span.w3-margin-left.w3-large= docFiles[0].filename
+                                if remainingFiles > 0
+                                    span.w3-tag.w3-white.w3-round.w3-display-right.w3-margin-right +#{remainingFiles}
+                                if imageFiles.length === 0
+                                    if post.isPublic
+                                        .w3-tag.w3-teal.w3-round.w3-display-topright.w3-margin Public
+                                    else
+                                        .w3-tag.w3-red.w3-round.w3-display-topright.w3-margin Private
+                        
+                        .w3-container.w3-padding-16
+                            p.w3-xlarge(style="margin-top:0; color:#1f2937")= post.title || 'Untitled'
+                            p#postTags.w3-text-grey= `Tags: ${post.tags.join(', ')}`
+                            p
+                                i.fa.fa-calendar.w3-text-blue.w3-margin-right
+                                = new Date(post.createdAt).toLocaleString('pt-PT', {timeZone:"Europe/Lisbon"}).substring(0, 17)
+                            p.w3-text-grey= post.content ? (post.content.length > 100 ? post.content.substring(0, 100) + '...' : post.content) : 'No content'
+                            
+                            .w3-row.w3-margin-top
+                                .w3-col.s6
+                                    span.w3-tag.w3-round.w3-light-grey
+                                        i.fa.fa-comments.w3-margin-right
+                                        = (post.comments && post.comments.length) || 0
+
+        if !posts || posts.length === 0
+            .w3-container.w3-center.w3-padding-64
+                .w3-card.w3-white.w3-round-large.w3-padding-large(style="max-width:500px;margin:0 auto")
+                    i.fa.fa-newspaper.w3-text-teal(style="font-size:48px")
+                    h3.w3-text-grey No posts yet
+                    p.w3-text-grey Wait for the user to create their first post!
+
+block scripts
+    script(src="/javascripts/filters.js")
